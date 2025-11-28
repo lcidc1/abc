@@ -1,6 +1,6 @@
 <?php
 // 获取当前请求的完整路径
-$request_uri = $_SERVER['REQUEST_URI'];
+//$request_uri = $_SERVER['REQUEST_URI'];
 
 // 提取/abc/后面的内容
 if (preg_match('#/abc/(.+)$#', $request_uri, $matches)) {
