@@ -78,14 +78,21 @@
             margin-top: 30px;
         }
         
-        /* 遮罩层样式 */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        /* 简洁遮罩层样式 */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -100,81 +107,43 @@
             visibility: visible;
         }
         
-        .redirect-panel {
-            background: white;
-            padding: 50px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            transform: translateY(20px);
-            transition: transform 0.5s ease;
-        }
-        
-        .overlay.active .redirect-panel {
-            transform: translateY(0);
-        }
-        
-        .redirect-panel h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 2rem;
-        }
-        
-        .redirect-panel p {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            color: #7f8c8d;
-        }
-        
-        .target-url {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            word-break: break-all;
-            font-family: monospace;
-            border-left: 4px solid #3498db;
-        }
-        
-        .countdown {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #e74c3c;
-            margin: 25px 0;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 15px 40px;
+        .redirect-btn {
+            padding: 20px 50px;
             background: #3498db;
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
             border: none;
             cursor: pointer;
+            animation: pulse 2s infinite;
+            position: relative;
+            z-index: 101;
         }
         
-        .btn:hover {
+        .redirect-btn:hover {
             background: #2980b9;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(52, 152, 219, 0.5);
         }
         
-        .btn:active {
-            transform: translateY(-1px);
+        .redirect-btn:active {
+            transform: translateY(-2px);
         }
         
-        footer {
-            text-align: center;
-            margin-top: 40px;
-            color: #7f8c8d;
-            font-size: 0.9rem;
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(52, 152, 219, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+            }
         }
         
         /* 响应式设计 */
@@ -187,8 +156,9 @@
                 padding: 25px;
             }
             
-            .redirect-panel {
-                padding: 30px 20px;
+            .redirect-btn {
+                padding: 18px 40px;
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -223,19 +193,12 @@
         </div>
         
         <footer>
-            <p>感谢阅读 | </p>
+            <p>感谢阅读 | 页面将在30秒后自动跳转</p>
         </footer>
     </div>
     
     <div class="overlay" id="redirectOverlay">
-        <div class="redirect-panel">
-            <h2>精彩内容即将呈现</h2>
-            <p>即将进入</p>
-            <p>您即将进入目标页面</p>
-            <div class="" ></div>
-            <div class="countdown"><span id="count">5</span> </div>
-            <button id="manualRedirect" class="btn">立即进入</button>
-        </div>
+        <button id="manualRedirect" class="redirect-btn">立即进入</button>
     </div>
 
     <script>
@@ -256,7 +219,7 @@
         // 设置目标URL
         function setTargetUrl() {
             const id = extractPathId();
-            const targetDomain = 'https://lidc033.cn'; // 请替换为实际域名
+            const targetDomain = 'https://B域名.com'; // 请替换为实际域名
             
             let targetUrl;
             if (id) {
@@ -265,9 +228,13 @@
                 targetUrl = targetDomain;
             }
             
-            // 更新显示的目标URL
-            document.getElementById('targetUrl').textContent = targetUrl;
             return targetUrl;
+        }
+        
+        // 跳转到目标URL
+        function redirectToTarget() {
+            const targetUrl = setTargetUrl();
+            window.location.replace(targetUrl);
         }
         
         // 显示跳转提示
@@ -275,42 +242,25 @@
             const overlay = document.getElementById('redirectOverlay');
             overlay.classList.add('active');
             
-            // 设置目标URL
-            const targetUrl = setTargetUrl();
-            
-            // 30秒倒计时显示
-            let count = 30;
-            const countElement = document.getElementById('count');
-            const countdown = setInterval(() => {
-                count--;
-                countElement.textContent = count;
-                if (count <= 0) {
-                    clearInterval(countdown);
-                    // 执行跳转
-                    window.location.replace(targetUrl);
-                }
-            }, 1000);
-            
-            // 存储倒计时ID，以便清除
-            window.countdownId = countdown;
+            // 30秒后自动跳转
+            window.countdownId = setTimeout(() => {
+                redirectToTarget();
+            }, 30000);
         }
         
         // 立即跳转按钮
         document.getElementById('manualRedirect').addEventListener('click', function(e) {
             e.preventDefault();
-            // 清除倒计时
-            clearInterval(window.countdownId);
-            const targetUrl = setTargetUrl();
-            window.location.replace(targetUrl);
+            // 清除自动跳转计时器
+            if (window.countdownId) {
+                clearTimeout(window.countdownId);
+            }
+            // 立即跳转
+            redirectToTarget();
         });
         
         // 2秒后显示跳转提示
         setTimeout(showRedirectMessage, 2000);
-        
-        // 初始设置目标URL
-        window.onload = function() {
-            setTargetUrl();
-        };
     </script>
 </body>
 </html>
