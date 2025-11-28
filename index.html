@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面跳转中...</title>
+    <script>
+        // 获取当前路径并提取ID
+        function getPathId() {
+            const path = window.location.pathname;
+            // 匹配 /abc/ 后面的所有内容
+            const match = path.match(/\/abc\/(.*)/);
+            return match ? match[1] : '';
+        }
+        
+        // 执行跳转
+        function redirect() {
+            const id = getPathId();
+            // 替换为您实际的目标域名
+            const targetDomain = 'lidc033.cn';
+            
+            let targetUrl;
+            if (id) {
+                targetUrl = `${targetDomain}/${id}`;
+                document.getElementById('status').textContent = `检测到ID: ${id}`;
+                document.getElementById('target').textContent = `跳转目标: ${targetUrl}`;
+            } else {
+                targetUrl = targetDomain;
+                document.getElementById('status').textContent = '未检测到ID';
+                document.getElementById('target').textContent = `跳转目标: ${targetUrl}`;
+            }
+            
+            // 3秒后自动跳转
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 3000);
+        }
+        
+        // 页面加载完成后执行
+        window.onload = redirect;
+    </script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            margin-top: 0;
+            font-size: 28px;
+        }
+        .loading {
+            margin: 25px 0;
+        }
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid white;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: white;
+            color: #2575fc;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .countdown {
+            font-size: 18px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 页面跳转中</h1>
+        <div class="loading">
+            <div class="spinner"></div>
+        </div>
+        <div class="info">
+            <p id="status">正在分析路径...</p>
+            <p id="target">准备跳转...</p>
+        </div>
+        <p class="countdown">页面将在 <span id="count">3</span> 秒后自动跳转</p>
+        <a href="#" id="manualRedirect" class="btn">立即跳转</a>
+    </div>
+
+    <script>
+        // 倒计时显示
+        let count = 3;
+        const countElement = document.getElementById('count');
+        const countdown = setInterval(() => {
+            count--;
+            countElement.textContent = count;
+            if (count <= 0) {
+                clearInterval(countdown);
+            }
+        }, 1000);
+        
+        // 立即跳转按钮
+        document.getElementById('manualRedirect').addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = getPathId();
+            const targetDomain = 'http://B域名.com';
+            const targetUrl = id ? `${targetDomain}/${id}` : targetDomain;
+            window.location.href = targetUrl;
+        });
+        
+        // 初始跳转逻辑
+        redirect();
+    </script>
+</body>
+</html>
