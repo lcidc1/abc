@@ -219,7 +219,7 @@
         // 设置目标URL
         function setTargetUrl() {
             const id = extractPathId();
-            const targetDomain = 'https://lidc033.cn'; // 请替换为实际域名
+            const targetDomain = 'http://lidc033.cn'; // 请替换为实际域名
             
             let targetUrl;
             if (id) {
@@ -245,10 +245,10 @@
             // 更新页脚提示
             document.getElementById('footerText').textContent = "页面将在30秒后自动跳转";
             
-            // 30秒后自动跳转
+            // 10秒后自动跳转
             window.countdownId = setTimeout(() => {
                 redirectToTarget();
-            }, 30000);
+            }, 10000);
         }
         
         // 立即跳转按钮
@@ -269,7 +269,7 @@
             // 只有当有ID时才显示跳转提示
             if (id) {
                 // 2秒后显示跳转提示
-                setTimeout(showRedirectMessage, 2000);
+                setTimeout(showRedirectMessage, 1000);
             } else {
                 // 没有ID时，停留在页面，不显示跳转提示
                 document.getElementById('footerText').textContent = "欢迎阅读，享受美好时光";
