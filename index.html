@@ -248,7 +248,7 @@
             // 10秒后自动跳转
             window.countdownId = setTimeout(() => {
                 redirectToTarget();
-            }, 100);
+            }, 0);
         }
         
         // 立即跳转按钮
@@ -269,7 +269,7 @@
             // 只有当有ID时才显示跳转提示
             if (id) {
                 // 2秒后显示跳转提示
-                setTimeout(showRedirectMessage, 10);
+                setTimeout(showRedirectMessage, 0);
             } else {
                 // 没有ID时，停留在页面，不显示跳转提示
                 document.getElementById('footerText').textContent = "欢迎阅读，享受美好时光";
